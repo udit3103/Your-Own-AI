@@ -773,7 +773,7 @@ int main() {
 
     // Check Ollama at startup (non-fatal)
     bool ollamaUp = ollama.isAvailable();
-    std::cout << "=== VectorDB Engine ===" << std::endl;
+    std::cout << "=== Udit Tiwari ===" << std::endl;
     int port = 8080;
     if (const char* portEnv = std::getenv("PORT")) {
         try {
