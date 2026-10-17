@@ -56,22 +56,15 @@ You need **3 things** installed on your Windows laptop:
 
 ---
 
-## Publish to GitHub and Deploy the Demo
+## Deploy the Demo on Vercel
 
-Create an empty repository on GitHub, then run these commands from this project folder. Replace the placeholders with your GitHub username and repository name:
+1. In Vercel, choose **Add New** → **Project** and import `udit3103/Your-Own-AI` from GitHub.
+2. Keep the project root at the repository root. Vercel detects `Dockerfile.vercel` and builds the C++ server container.
+3. Deploy the `main` branch and open the generated Vercel URL.
 
-```powershell
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-git push -u origin main
-```
+The hosted demo serves the UI and vector-search API. Vercel scales the container down when idle, and the API keeps data in memory. The RAG/document features still require Ollama on the same host and are not available in this cloud setup. The API has no authentication, so do not submit private documents or sensitive data.
 
-To deploy the vector-search demo on Render:
-
-1. In Render, choose **New +** → **Web Service**, then connect the GitHub repository.
-2. Select **Docker** as the runtime and deploy the `main` branch.
-3. Open the generated Render URL after the first deploy completes.
-
-The hosted demo serves the UI and vector-search API. The RAG/document features still require Ollama and are not available in this cloud setup. The API has no authentication and keeps data in memory, so treat this as a public demo: do not submit private documents or sensitive data.
+Vercel's custom container runtime is in beta and uses Vercel Function limits and usage quotas; check your plan's current limits before deploying.
 
 Keep the upstream copyright and MIT license notice at the top of `httplib.h`; it identifies the bundled third-party HTTP library, not the app owner.
 
@@ -152,17 +145,15 @@ You should see both models listed.
 Open **PowerShell** and run:
 
 ```powershell
-git clone https://github.com/YOUR_USERNAME/VectorDB.git
-cd VectorDB
+git clone https://github.com/udit3103/Your-Own-AI.git
+cd Your-Own-AI
 ```
-
-*(Replace `YOUR_USERNAME` with your GitHub username. If you chose a different repository name, use it in the clone URL and `cd` command.)*
 
 ---
 
 ### Step 5 — Compile the C++ Server
 
-Inside the `VectorDB` folder, run:
+Inside the `Your-Own-AI` folder, run:
 
 ```powershell
 g++ -std=c++17 -O2 main.cpp -o db -lws2_32
@@ -185,14 +176,14 @@ ollama serve
 ```
 *(If Ollama is already in the system tray, skip this)*
 
-**Terminal 2** — Start the VectorDB server:
+**Terminal 2** — Start the server:
 ```powershell
 ./db
 ```
 
 You should see:
 ```
-=== VectorDB Engine ===
+=== Udit Tiwari ===
 http://localhost:8080
 20 demo vectors | 16 dims | HNSW+KD-Tree+BruteForce
 Ollama: ONLINE
@@ -291,8 +282,9 @@ curl -X POST http://localhost:8080/doc/ask `
 ## Project Structure
 
 ```
-VectorDB/
+Your-Own-AI/
 ├── Dockerfile     ← Container build for the hosted demo
+├── Dockerfile.vercel ← Vercel container runtime build
 ├── main.cpp        ← C++ backend (HNSW, KD-Tree, BruteForce, REST API, RAG)
 ├── httplib.h       ← Single-header HTTP server library (cpp-httplib)
 ├── index.html      ← Frontend (PCA scatter plot, chat UI, benchmark)
